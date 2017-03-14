@@ -11,7 +11,7 @@ import java.awt.geom.Rectangle2D;
 
 /**
  *
- * @author Usuario
+ * @author Rojo5
  */
 public class Aeronave  extends Rectangle2D.Double{
     int alturaVentana = Ventana.HEIGHT;

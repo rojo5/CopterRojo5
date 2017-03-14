@@ -22,9 +22,10 @@ import javax.swing.Timer;
 public class Ventana extends javax.swing.JFrame {
     
     //Declaracion de variables y objetos
-    static int ANCHOPANTALLA = 730;
+    static int ANCHOPANTALLA = 850;
     static int ALTOPANTALLA= 420;
     Aeronave miAeronave = new Aeronave(30, 30, Color.red);
+    Pasillo miPasillo = new Pasillo(25, ANCHOPANTALLA);
     
     BufferedImage buffer = null;
     Graphics2D lienzoGraphics, bufferGraphics = null;
@@ -61,6 +62,7 @@ public class Ventana extends javax.swing.JFrame {
         bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA); 
         
         miAeronave.vuela(bufferGraphics);
+        miPasillo.pintaColumna(bufferGraphics);
         
         lienzoGraphics.drawImage(buffer, 0,0, null);
     }
@@ -87,7 +89,7 @@ public class Ventana extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 730, Short.MAX_VALUE)
+            .addGap(0, 850, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -100,7 +102,7 @@ public class Ventana extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 107, Short.MAX_VALUE))
+                .addGap(0, 130, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
