@@ -7,8 +7,12 @@ package codigo;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 
 /**
@@ -20,11 +24,18 @@ public class Ventana extends javax.swing.JFrame {
     //Declaracion de variables y objetos
     static int ANCHOPANTALLA = 730;
     static int ALTOPANTALLA= 420;
+    Aeronave miAeronave = new Aeronave(30, 30, Color.red);
     
     BufferedImage buffer = null;
     Graphics2D lienzoGraphics, bufferGraphics = null;
     
-    
+    //Declaracion del temporizador
+    Timer temporizador  = new Timer(10, new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            bucleDelJuego();
+        }
+    });
     
     /**
      * Creates new form Ventana
@@ -32,6 +43,7 @@ public class Ventana extends javax.swing.JFrame {
     public Ventana() {
         initComponents();
         inicializaBuffers();
+        temporizador.start();
     }
 
     
@@ -40,10 +52,18 @@ public class Ventana extends javax.swing.JFrame {
         buffer = (BufferedImage) jPanel1.createImage(ANCHOPANTALLA, ALTOPANTALLA);
         bufferGraphics = buffer.createGraphics();
         
-        bufferGraphics.setColor(Color.blue);
+        bufferGraphics.setColor(Color.cyan);
         bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA);
     }
     
+    private void bucleDelJuego(){
+        bufferGraphics.setColor(Color.cyan);
+        bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA); 
+        
+        miAeronave.vuela(bufferGraphics);
+        
+        lienzoGraphics.drawImage(buffer, 0,0, null);
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -57,6 +77,11 @@ public class Ventana extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -84,6 +109,12 @@ public class Ventana extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_SPACE){
+            miAeronave.yVelocidad+=8;
+        }
+    }//GEN-LAST:event_formKeyPressed
 
     /**
      * @param args the command line arguments
