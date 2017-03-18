@@ -25,7 +25,8 @@ public class Ventana extends javax.swing.JFrame {
     static int ANCHOPANTALLA = 850;
     static int ALTOPANTALLA= 420;
     Aeronave miAeronave = new Aeronave(30, 30, Color.red);
-    Pasillo miPasillo = new Pasillo(25, ANCHOPANTALLA);
+    //Pasillo miPasillo = new Pasillo(25, ANCHOPANTALLA, 500);
+    Pasillo  arrayPasillo[]= new Pasillo[33];   //Pongo 33 para probar que se mueven
     
     BufferedImage buffer = null;
     Graphics2D lienzoGraphics, bufferGraphics = null;
@@ -44,10 +45,21 @@ public class Ventana extends javax.swing.JFrame {
     public Ventana() {
         initComponents();
         inicializaBuffers();
+        creaColumnas();
         temporizador.start();
     }
-
     
+    //Creo este metodo para crear un array del objeto pasillo  añadir todos los parametros
+    //que tendra cada objeto pasillo
+    private void creaColumnas(){
+        int posicion =0;
+       for(int i=0; i<arrayPasillo.length;i++){
+         arrayPasillo[i]= new Pasillo(25, ANCHOPANTALLA, posicion);
+         posicion+=25;
+        }
+    }
+    
+    //Inicializamos los buffers para poder crear un lienzo donde poder representar os objetos
     private void inicializaBuffers(){
         lienzoGraphics = (Graphics2D) jPanel1.getGraphics();
         buffer = (BufferedImage) jPanel1.createImage(ANCHOPANTALLA, ALTOPANTALLA);
@@ -57,12 +69,24 @@ public class Ventana extends javax.swing.JFrame {
         bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA);
     }
     
+    //En este metodo se encuentran los objetos que forman parte del juego con sus parametros
+    //Aqui se pintan en el buffer el los objetos
     private void bucleDelJuego(){
+        for(int i=0; i<arrayPasillo.length;i++){
+         if(miAeronave.chequeaColision(arrayPasillo[i]) == true){
+             temporizador.stop();
+         }
+        }  
         bufferGraphics.setColor(Color.cyan);
         bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA); 
-        
+        //Pinto las columnas( clase Pasillo)
+         for(int i=0; i<arrayPasillo.length;i++){
+         arrayPasillo[i].pintaColumna(bufferGraphics);         
+        }
         miAeronave.vuela(bufferGraphics);
-        miPasillo.pintaColumna(bufferGraphics);
+//        miPasillo.pintaColumna(bufferGraphics);
+    
+       
         
         lienzoGraphics.drawImage(buffer, 0,0, null);
     }
@@ -111,10 +135,11 @@ public class Ventana extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    //Dectecta si se pulsa la tecla del espacio y al pulsar reduce la coordenada Y
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         if(evt.getKeyCode() == KeyEvent.VK_SPACE){
-            miAeronave.yVelocidad+=8;
+            miAeronave.yVelocidad+=9;
         }
     }//GEN-LAST:event_formKeyPressed
 

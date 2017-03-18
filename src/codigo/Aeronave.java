@@ -7,6 +7,7 @@ package codigo;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -14,9 +15,11 @@ import java.awt.geom.Rectangle2D;
  * @author Rojo5
  */
 public class Aeronave  extends Rectangle2D.Double{
+    
+    //Declaracion de variables 
     int alturaVentana = Ventana.HEIGHT;
     Color colorNave;
-    int yVelocidad = -2;
+    double yVelocidad = -2;
     
     public Aeronave(int _ancho, int _alto, Color _color){
         super(100, 150, _ancho, _alto);
@@ -28,16 +31,22 @@ public class Aeronave  extends Rectangle2D.Double{
         //pongo un tope para que no se salga por el techo
         if (this.y < 0) {
             this.y = 0;
-            yVelocidad = -2;
-        }
-        
-       yVelocidad -= 1;
-        if (yVelocidad < -3){
-            yVelocidad = -2;
+            yVelocidad = -1;
         }
         g2.setColor(colorNave);
         g2.fill(this);
+        yVelocidad -= 1;
+        if (yVelocidad < -3){
+            yVelocidad = -1;
+        }
+    }
+    
+    public boolean chequeaColision(Pasillo p){
+           //Calcula si la nave se sale de los rectangulos
+        if(this.y < p.posicionY || this.y+ this.height > p.posicionY + p.altoColumna){
+            return true;
+        }
         
-        
+            return false;
     }
 }
