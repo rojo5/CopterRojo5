@@ -43,10 +43,13 @@ public class Aeronave  extends Rectangle2D.Double{
     
     public boolean chequeaColision(Pasillo p){
            //Calcula si la nave se sale de los rectangulos
-        if(this.y < p.posicionY || this.y+ this.height > p.posicionY + p.altoColumna){
+//        if(this.y < p.posicionY && this.x == p.posicionX || this.y+ this.height > p.posicionY + p.altoColumna && this.x == p.posicionX){
+//            return true;
+//        }
+        if((this.y  < p.columna.getY() && this.x >= p.columna.getX() && this.x <= p.columna.getX() + p.columna.getWidth()) || 
+           (this.y+ this.height > p.columna.getY() + p.columna.getHeight() && this.x <= p.columna.getX() + p.columna.getWidth())){
             return true;
         }
-        
             return false;
     }
 }

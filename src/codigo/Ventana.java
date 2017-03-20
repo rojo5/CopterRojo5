@@ -22,17 +22,18 @@ import javax.swing.Timer;
 public class Ventana extends javax.swing.JFrame {
     
     //Declaracion de variables y objetos
-    static int ANCHOPANTALLA = 850;
+    static int ANCHOPANTALLA = 811;
     static int ALTOPANTALLA= 420;
+    static int ANCHOCOLUMNA= 30;
     Aeronave miAeronave = new Aeronave(30, 30, Color.red);
     //Pasillo miPasillo = new Pasillo(25, ANCHOPANTALLA, 500);
-    Pasillo  arrayPasillo[]= new Pasillo[33];   //Pongo 33 para probar que se mueven
+    Pasillo  arrayPasillo[]= new Pasillo[29];   //Pongo 33 para probar que se mueven
     
     BufferedImage buffer = null;
     Graphics2D lienzoGraphics, bufferGraphics = null;
     
     //Declaracion del temporizador
-    Timer temporizador  = new Timer(10, new ActionListener() {
+    Timer temporizador  = new Timer(20, new ActionListener() { //Por defecto estaba a 10
         @Override
         public void actionPerformed(ActionEvent e) {
             bucleDelJuego();
@@ -52,10 +53,10 @@ public class Ventana extends javax.swing.JFrame {
     //Creo este metodo para crear un array del objeto pasillo  añadir todos los parametros
     //que tendra cada objeto pasillo
     private void creaColumnas(){
-        int posicion =0;
+        int posicion =-30;
        for(int i=0; i<arrayPasillo.length;i++){
-         arrayPasillo[i]= new Pasillo(25, ANCHOPANTALLA, posicion);
-         posicion+=25;
+         arrayPasillo[i]= new Pasillo(ANCHOCOLUMNA+posicion, ANCHOPANTALLA); //Ancho columna 25
+         posicion+=ANCHOCOLUMNA;
         }
     }
     
@@ -72,23 +73,31 @@ public class Ventana extends javax.swing.JFrame {
     //En este metodo se encuentran los objetos que forman parte del juego con sus parametros
     //Aqui se pintan en el buffer el los objetos
     private void bucleDelJuego(){
-        for(int i=0; i<arrayPasillo.length;i++){
-         if(miAeronave.chequeaColision(arrayPasillo[i]) == true){
-             temporizador.stop();
-         }
-        }  
         bufferGraphics.setColor(Color.cyan);
         bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA); 
+         
+
         //Pinto las columnas( clase Pasillo)
-         for(int i=0; i<arrayPasillo.length;i++){
-         arrayPasillo[i].pintaColumna(bufferGraphics);         
+        for (Pasillo arrayPasillo1 : arrayPasillo) {
+            arrayPasillo1.pintaColumna(bufferGraphics);        
         }
         miAeronave.vuela(bufferGraphics);
+        
+        lienzoGraphics.drawImage(buffer, 0,0, null);
+        
+        for (Pasillo arrayPasillo1 : arrayPasillo) {
+            if (miAeronave.chequeaColision(arrayPasillo1) == true) {
+                temporizador.stop();
+            }
+        }  
+        
+       
+        
 //        miPasillo.pintaColumna(bufferGraphics);
     
        
         
-        lienzoGraphics.drawImage(buffer, 0,0, null);
+        
     }
     
     /**
@@ -113,7 +122,7 @@ public class Ventana extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 850, Short.MAX_VALUE)
+            .addGap(0, 812, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,7 +135,7 @@ public class Ventana extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 130, Short.MAX_VALUE))
+                .addGap(0, 88, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
