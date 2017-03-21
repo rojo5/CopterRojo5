@@ -18,48 +18,46 @@ import javax.swing.Timer;
 public class Pasillo {
 
     //Declaracion de variables
-    Rectangle2D columna;
-    int altoColumna = 275;
-    int anchoColumna = 30;
-    int posicionX = 50;
-    int posicionY = 50;
+    int hueco = 200;
+    int alturaColumna =230;
+    int anchoColumna =30;
+    Rectangle2D suelo, techo;
     private int anchoPantalla;
-
-    public Pasillo(int ancho, int _anchoPantalla) {
+    
+    public Pasillo(int ancho, int _anchoPantalla){
         posicionInicial(ancho);
-        anchoPantalla = _anchoPantalla;
+        anchoPantalla= _anchoPantalla;
     }
-
-    private void posicionInicial(int ancho) {
-        Random aleatorio = new Random();
-        int desplazamiento = aleatorio.nextInt(5);
-
-        columna = new Rectangle2D.Double(ancho, posicionY - desplazamiento, anchoColumna, altoColumna);
-
+    
+    private void posicionInicial(int ancho){
+        Random aleatroio = new Random();
+        int desplazamiento = aleatroio.nextInt(10)+100;
+        
+        techo = new Rectangle2D.Double(ancho, -desplazamiento - anchoColumna*2, anchoColumna, alturaColumna);
+        
+        suelo = new Rectangle2D.Double(ancho, alturaColumna + hueco - desplazamiento +anchoColumna/2, anchoColumna, alturaColumna);
     }
-
-    //Este metodo se encarga de la representacion de la columna en el juego
-    public void pintaColumna(Graphics2D g2) {
+    
+    public void pintaColumna(Graphics2D g2){
         animacionColumna();
-
-        g2.setColor(Color.BLACK);
-        g2.fill(columna);
-//        g2.draw(columna);
-
+        
+        g2.setColor(Color.CYAN);
+        
+        g2.fill(techo);
+        g2.fill(suelo);
+        
+//        g2.draw(techo);
+//        g2.draw(suelo);
     }
-
-    private void animacionColumna() {
-        if (columna.getX() + columna.getWidth() < 0) {
-            if (posicionY > 30) {
-                posicionY-=13;
-                posicionInicial(anchoPantalla);
-            }else{
-                posicionY =75;
-                
-            }
-
-        } else {
-            columna.setFrame(columna.getX() - 1, columna.getY(), columna.getWidth(), columna.getHeight());
+    
+    private void animacionColumna(){
+        
+        if(techo.getX() + anchoColumna < 0){
+            posicionInicial(anchoPantalla);
+        }
+        else{
+            techo.setFrame(techo.getX()-1, techo.getY(),techo.getWidth(), techo.getHeight());
+            suelo.setFrame(suelo.getX()-1, suelo.getY(),suelo.getWidth(), suelo.getHeight());
         }
     }
 }

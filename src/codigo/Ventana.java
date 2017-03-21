@@ -66,14 +66,14 @@ public class Ventana extends javax.swing.JFrame {
         buffer = (BufferedImage) jPanel1.createImage(ANCHOPANTALLA, ALTOPANTALLA);
         bufferGraphics = buffer.createGraphics();
         
-        bufferGraphics.setColor(Color.cyan);
+        bufferGraphics.setColor(Color.BLACK);
         bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA);
     }
     
     //En este metodo se encuentran los objetos que forman parte del juego con sus parametros
     //Aqui se pintan en el buffer el los objetos
     private void bucleDelJuego(){
-        bufferGraphics.setColor(Color.cyan);
+        bufferGraphics.setColor(Color.BLACK);
         bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA); 
          
 
