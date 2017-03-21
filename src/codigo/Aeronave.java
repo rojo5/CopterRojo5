@@ -43,11 +43,7 @@ public class Aeronave  extends Rectangle2D.Double{
     
     public boolean chequeaColision(Pasillo p){
            //Calcula si la nave se sale de los rectangulos
-//        if((this.y  < p.columna.getY() && this.x >= p.columna.getX() && this.x <= p.columna.getX() + p.columna.getWidth()) || 
-//           (this.y+ this.height > p.columna.getY() + p.columna.getHeight() && this.x <= p.columna.getX() + p.columna.getWidth())){
-//            return true;
-//        }
-//            return false;
+
             
             Area  areaNave = new Area(this);
             Area  areaTecho = new Area(p.techo);

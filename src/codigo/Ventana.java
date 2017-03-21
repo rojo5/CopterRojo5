@@ -6,11 +6,16 @@
 package codigo;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -25,6 +30,10 @@ public class Ventana extends javax.swing.JFrame {
     static int ANCHOPANTALLA = 811;
     static int ALTOPANTALLA= 420;
     static int ANCHOCOLUMNA= 30;
+    long principio= System.currentTimeMillis();
+    long acaba;
+    int distancia;
+    int distanciaMax;
     Aeronave miAeronave = new Aeronave(30, 30, Color.red);
     //Pasillo miPasillo = new Pasillo(25, ANCHOPANTALLA, 500);
     Pasillo  arrayPasillo[]= new Pasillo[29];   //Pongo 33 para probar que se mueven
@@ -33,7 +42,7 @@ public class Ventana extends javax.swing.JFrame {
     Graphics2D lienzoGraphics, bufferGraphics = null;
     
     //Declaracion del temporizador
-    Timer temporizador  = new Timer(20, new ActionListener() { //Por defecto estaba a 10
+    Timer temporizador  = new Timer(10, new ActionListener() { //Por defecto estaba a 10
         @Override
         public void actionPerformed(ActionEvent e) {
             bucleDelJuego();
@@ -47,6 +56,7 @@ public class Ventana extends javax.swing.JFrame {
         initComponents();
         inicializaBuffers();
         creaColumnas();
+        cargar(new File("Puntuacion.txt"));
         temporizador.start();
     }
     
@@ -55,7 +65,7 @@ public class Ventana extends javax.swing.JFrame {
     private void creaColumnas(){
         int posicion =-30;
        for(int i=0; i<arrayPasillo.length;i++){
-         arrayPasillo[i]= new Pasillo(ANCHOCOLUMNA+posicion, ANCHOPANTALLA); //Ancho columna 25
+         arrayPasillo[i]= new Pasillo(ANCHOCOLUMNA+posicion, ANCHOPANTALLA, this);
          posicion+=ANCHOCOLUMNA;
         }
     }
@@ -82,23 +92,59 @@ public class Ventana extends javax.swing.JFrame {
             arrayPasillo1.pintaColumna(bufferGraphics);        
         }
         miAeronave.vuela(bufferGraphics);
+        //Pinto Marcador
+        acaba= System.currentTimeMillis();
+        distancia = (int) ((acaba-principio)/60);
+        bufferGraphics.setFont(new Font("Courier New", Font.BOLD, 16));
+        bufferGraphics.drawString("Distancia: "+ distancia, ANCHOPANTALLA/2, 400);
+        if(distancia > distanciaMax){
+            distanciaMax= distancia;
+        }
+        bufferGraphics.drawString("Record: "+ distanciaMax, 50, 400);
         
         lienzoGraphics.drawImage(buffer, 0,0, null);
         
         for (Pasillo arrayPasillo1 : arrayPasillo) {
             if (miAeronave.chequeaColision(arrayPasillo1) == true) {
+                guardar();
                 temporizador.stop();
             }
         }  
         
-       
-        
-//        miPasillo.pintaColumna(bufferGraphics);
-    
-       
-        
+           
         
     }
+    
+    
+    public void guardar(){
+        FileWriter out;
+        
+        try{
+            out = new FileWriter("Puntuacion.txt");
+            out.write(""+distanciaMax);
+            out.close();
+        }
+        catch(IOException i){
+             System.out.println("Error: "+i.getMessage());
+        }
+    }
+    
+    public void cargar(File fichero){
+        try{
+            Scanner reader = new Scanner(fichero);
+            while(reader.hasNext()){
+                int valor = reader.nextInt();
+                if(valor > distanciaMax){
+                    distanciaMax= valor;
+                }
+            }
+        }
+        catch(IOException i){
+            System.out.println("Error. "+i);
+        }
+    }
+    
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
