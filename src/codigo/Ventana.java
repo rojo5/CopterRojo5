@@ -8,6 +8,7 @@ package codigo;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -34,6 +36,7 @@ public class Ventana extends javax.swing.JFrame {
     long acaba;
     int distancia;
     int distanciaMax;
+    Image fondo;
     Aeronave miAeronave = new Aeronave(30, 30, Color.red);
     //Pasillo miPasillo = new Pasillo(25, ANCHOPANTALLA, 500);
     Pasillo  arrayPasillo[]= new Pasillo[29];   //Pongo 33 para probar que se mueven
@@ -70,6 +73,11 @@ public class Ventana extends javax.swing.JFrame {
         }
     }
     
+    private Image cargaImagen(String nombreImagen, double altoImagen){
+        return(new ImageIcon(new ImageIcon(getClass().getResource(nombreImagen))
+                .getImage().getScaledInstance(ANCHOPANTALLA, (int) ALTOPANTALLA, Image.SCALE_DEFAULT))).getImage();
+    }
+    
     //Inicializamos los buffers para poder crear un lienzo donde poder representar os objetos
     private void inicializaBuffers(){
         lienzoGraphics = (Graphics2D) jPanel1.getGraphics();
@@ -78,6 +86,9 @@ public class Ventana extends javax.swing.JFrame {
         
         bufferGraphics.setColor(Color.BLACK);
         bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA);
+        
+        //Ponemos el fondo
+        fondo= cargaImagen("/imagenes/DeathStarSueloOscuro.png", ALTOPANTALLA/2);
     }
     
     //En este metodo se encuentran los objetos que forman parte del juego con sus parametros
@@ -85,6 +96,8 @@ public class Ventana extends javax.swing.JFrame {
     private void bucleDelJuego(){
         bufferGraphics.setColor(Color.BLACK);
         bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA); 
+        //FONDO
+        bufferGraphics.drawImage(fondo, 0,0, null);
          
 
         //Pinto las columnas( clase Pasillo)
@@ -115,7 +128,7 @@ public class Ventana extends javax.swing.JFrame {
         
     }
     
-    
+        
     public void guardar(){
         FileWriter out;
         
