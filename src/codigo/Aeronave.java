@@ -7,8 +7,11 @@ package codigo;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -19,22 +22,28 @@ public class Aeronave  extends Rectangle2D.Double{
     //Declaracion de variables 
     int alturaVentana = Ventana.HEIGHT;
     Color colorNave;
+    Image textura;
     double yVelocidad = -2;
     
     public Aeronave(int _ancho, int _alto, Color _color){
         super(100, 150, _ancho, _alto);
         colorNave = _color;
+        textura = (new ImageIcon(new ImageIcon(getClass().getResource("/imagenes/X-Wing.png"))
+                .getImage().getScaledInstance(60, 65, Image.SCALE_DEFAULT))).getImage();
     }
     
     public void vuela(Graphics2D g2){
+        AffineTransform trans = new AffineTransform();
+         trans.translate(x, y);  //mueve la imagen a la posición en que tiene que ser dibujada
         this.y = this.y - yVelocidad;
         //pongo un tope para que no se salga por el techo
         if (this.y < 0) {
             this.y = 0;
             yVelocidad = -1;
         }
+         g2.drawImage(textura, trans,null);
         g2.setColor(colorNave);
-        g2.fill(this);
+//        g2.draw(this);
         yVelocidad -= 1;
         if (yVelocidad < -3){
             yVelocidad = -1;

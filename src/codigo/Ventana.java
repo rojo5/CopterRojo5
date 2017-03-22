@@ -37,7 +37,7 @@ public class Ventana extends javax.swing.JFrame {
     int distancia;
     int distanciaMax;
     Image fondo;
-    Aeronave miAeronave = new Aeronave(30, 30, Color.red);
+    Aeronave miAeronave = new Aeronave(60, 60, Color.red);
     //Pasillo miPasillo = new Pasillo(25, ANCHOPANTALLA, 500);
     Pasillo  arrayPasillo[]= new Pasillo[29];   //Pongo 33 para probar que se mueven
     
@@ -88,7 +88,7 @@ public class Ventana extends javax.swing.JFrame {
         bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA);
         
         //Ponemos el fondo
-        fondo= cargaImagen("/imagenes/DeathStarSueloOscuro.png", ALTOPANTALLA/2);
+        fondo= cargaImagen("/imagenes/fondo.png", ALTOPANTALLA/2);
     }
     
     //En este metodo se encuentran los objetos que forman parte del juego con sus parametros
@@ -192,9 +192,7 @@ public class Ventana extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 88, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

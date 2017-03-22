@@ -2,9 +2,11 @@ package codigo;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Random;
+import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 /*
@@ -27,10 +29,12 @@ public class Pasillo {
     Rectangle2D suelo, techo;
 //    RoundRectangle2D suelo2, techo2;
     private int anchoPantalla;
+     Image col_abajo, col_arriba;
     
     public Pasillo(int ancho, int _anchoPantalla, Ventana v){
         posicionInicial(ancho);
         anchoPantalla= _anchoPantalla;
+        cargarTexturas();
         posicionColumna = v.arrayPasillo.length;
     }
     
@@ -49,13 +53,30 @@ public class Pasillo {
        
     }
     
+    private void cargarTexturas(){
+       
+        col_arriba = (new ImageIcon(new ImageIcon(
+                getClass().getResource("/imagenes/DeathSatarSueloClaro.png"))
+                .getImage().getScaledInstance(anchoColumna, alturaColumna-10, Image.SCALE_DEFAULT)))
+                .getImage();  
+        
+         col_abajo = (new ImageIcon(new ImageIcon(
+                getClass().getResource("/imagenes/DeathSatarSueloClaro.png"))
+                .getImage().getScaledInstance(anchoColumna, alturaColumna , Image.SCALE_DEFAULT)))
+                .getImage();
+    }
+    
     public void pintaColumna(Graphics2D g2){
         animacionColumna();
         
         g2.setColor(Color.CYAN);
         
-        g2.fill(techo);
-        g2.fill(suelo);
+        
+        g2.drawImage(col_arriba, (int)techo.getX(), (int)techo.getY()+anchoColumna/2, null);
+        g2.drawImage(col_abajo, (int)suelo.getX(), (int)suelo.getY(), null);
+        
+//        g2.fill(techo);
+//        g2.fill(suelo);
         
 //        g2.draw(techo);
 //        g2.draw(suelo);
