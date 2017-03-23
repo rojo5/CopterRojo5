@@ -32,7 +32,7 @@ public class Ventana extends javax.swing.JFrame {
     static int ANCHOPANTALLA = 811;
     static int ALTOPANTALLA= 420;
     static int ANCHOCOLUMNA= 30;
-    long principio= System.currentTimeMillis();
+    long principio;
     long acaba;
     int distancia;
     int distanciaMax;
@@ -72,6 +72,7 @@ public class Ventana extends javax.swing.JFrame {
          arrayPasillo[i]= new Pasillo(ANCHOCOLUMNA+posicion, ANCHOPANTALLA, this);
          posicion+=ANCHOCOLUMNA;
         }
+       principio= System.currentTimeMillis();
     }
     
     private Image cargaImagen(String nombreImagen, double altoImagen){
@@ -95,6 +96,7 @@ public class Ventana extends javax.swing.JFrame {
     //En este metodo se encuentran los objetos que forman parte del juego con sus parametros
     //Aqui se pintan en el buffer el los objetos
     private void bucleDelJuego(){
+       
         bufferGraphics.setColor(Color.BLACK);
         bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA); 
         //FONDO
@@ -180,6 +182,11 @@ public class Ventana extends javax.swing.JFrame {
         jTextField1.setEnabled(false);
 
         jButton1.setText("Reiniciar");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -192,8 +199,8 @@ public class Ventana extends javax.swing.JFrame {
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jDialog1Layout.createSequentialGroup()
                         .addGap(143, 143, 143)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(284, Short.MAX_VALUE))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(174, Short.MAX_VALUE))
         );
         jDialog1Layout.setVerticalGroup(
             jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,6 +250,20 @@ public class Ventana extends javax.swing.JFrame {
             miAeronave.yVelocidad+=9;
         }
     }//GEN-LAST:event_formKeyPressed
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        jDialog1.setVisible(false);
+       
+        distancia=distancia-distancia*2;
+        miAeronave.x=50 ;
+        miAeronave.y= ALTOPANTALLA/2-30;
+        creaColumnas();
+      
+            temporizador.restart();
+        
+        
+        
+    }//GEN-LAST:event_jButton1MouseClicked
 
     /**
      * @param args the command line arguments

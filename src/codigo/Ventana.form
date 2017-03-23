@@ -15,10 +15,10 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="143" max="-2" attributes="0"/>
-                          <Component id="jButton1" min="-2" pref="116" max="-2" attributes="0"/>
+                          <Component id="jButton1" min="-2" pref="505" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="284" max="32767" attributes="0"/>
+                  <EmptySpace pref="174" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -48,6 +48,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Reiniciar"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton1MouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
