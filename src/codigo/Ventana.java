@@ -37,12 +37,14 @@ public class Ventana extends javax.swing.JFrame {
     long acaba;
     int distancia;
     int distanciaMax;
+    Boolean gatillo = false, bala = false, auxiliar = false;
     Image fondo;
+    //OBJETOS
     Aeronave miAeronave = new Aeronave(60, 60, Color.red);
-    
+    Disparo laser;
     Enemigo arrayEnemigo[]= new Enemigo[3];
-    //Pasillo miPasillo = new Pasillo(25, ANCHOPANTALLA, 500);
-    Pasillo  arrayPasillo[]= new Pasillo[29];   //Pongo 33 para probar que se mueven
+    
+    Pasillo  arrayPasillo[]= new Pasillo[29];
     
     BufferedImage buffer = null;
     Graphics2D lienzoGraphics, bufferGraphics = null;
@@ -68,6 +70,7 @@ public class Ventana extends javax.swing.JFrame {
         creaEnemigos();
     }
     
+    //Metodo para crear a los enemigos
     private void creaEnemigos(){
         for(int u=0;u < arrayEnemigo.length;u++){
             arrayEnemigo[u] = new Enemigo(ANCHOPANTALLA+ u*SEPARACIONENEMIGO, ANCHOPANTALLA);
@@ -84,7 +87,7 @@ public class Ventana extends javax.swing.JFrame {
         }
        principio= System.currentTimeMillis();
     }
-    
+    //Metodo para cargar las imagenes de la ventana
     private Image cargaImagen(String nombreImagen, double altoImagen){
         return(new ImageIcon(new ImageIcon(getClass().getResource(nombreImagen))
                 .getImage().getScaledInstance(ANCHOPANTALLA, (int) ALTOPANTALLA, Image.SCALE_DEFAULT))).getImage();
@@ -111,7 +114,8 @@ public class Ventana extends javax.swing.JFrame {
         bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA); 
         //FONDO
         bufferGraphics.drawImage(fondo, 0,0, null);
-         if(distancia >25){
+        
+        if(distancia >25){
               for (Enemigo arrayEnemigo1 : arrayEnemigo) {
                     arrayEnemigo1.mueve(bufferGraphics);   
               }
@@ -122,11 +126,27 @@ public class Ventana extends javax.swing.JFrame {
             arrayPasillo1.pintaColumna(bufferGraphics);        
         }
         miAeronave.vuela(bufferGraphics);
+        
+        //Generacion del disparo
+        if(gatillo==true){
+            bala = true;
+            auxiliar = true;
+            if(laser.disparo.getX() > ANCHOPANTALLA){
+                gatillo= false;
+                bala=false;   
+            }
+        }
+        if (auxiliar ==true){
+            laser.mueve(bufferGraphics);
+        }
+        
+        
         //Pinto Marcador
         acaba= System.currentTimeMillis();
         distancia = (int) ((acaba-principio)/60);
+        bufferGraphics.setColor(Color.yellow);
         bufferGraphics.setFont(new Font("Courier New", Font.BOLD, 16));
-        bufferGraphics.drawString("Distancia: "+ distancia, ANCHOPANTALLA/2, 400);
+        bufferGraphics.drawString("Distancia: "+ distancia, ANCHOPANTALLA/2+50, 400);
         if(distancia > distanciaMax){
             distanciaMax= distancia;
         }
@@ -134,6 +154,7 @@ public class Ventana extends javax.swing.JFrame {
         
         lienzoGraphics.drawImage(buffer, 0,0, null);
         
+        //Colisiones con los muros
         for (Pasillo arrayPasillo1 : arrayPasillo) {
             if (miAeronave.chequeaColision(arrayPasillo1 ) == true) {
                 guardar();
@@ -141,7 +162,7 @@ public class Ventana extends javax.swing.JFrame {
                 jDialog1.setVisible(true);
             }
         }  
-        
+        //Colisiones con las naves enemigas
         for (Enemigo arrayEnemigo1 : arrayEnemigo) {
             if (miAeronave.chequeaEnemigo(arrayEnemigo1 ) == true) {
                 guardar();
@@ -150,11 +171,22 @@ public class Ventana extends javax.swing.JFrame {
             }
         }  
         
-           
+        //Colisiones de los disparos con las naves
+        if(auxiliar == true){
+        for (Enemigo arrayEnemigo1 : arrayEnemigo) {
+            if (laser.chequeaEnemigo(arrayEnemigo1 ) == true) {
+                //Saca de la pantalla al caza y el disparo
+                arrayEnemigo1.cazaTie.setFrame(0- arrayEnemigo1.cazaTie.getWidth(), arrayEnemigo1.cazaTie.getY(),arrayEnemigo1.cazaTie.getWidth(), arrayEnemigo1.cazaTie.getHeight());
+                laser.disparo.setFrame(ANCHOPANTALLA+2, laser.disparo.getY(),laser.disparo.getWidth(), laser.disparo.getHeight());
+            }
+        }  
+        }
+        
+        
         
     }
     
-        
+       //Metodo para guardar la maxima puntuacion en un archivo 
     public void guardar(){
         FileWriter out;
         
@@ -167,7 +199,7 @@ public class Ventana extends javax.swing.JFrame {
              System.out.println("Error: "+i.getMessage());
         }
     }
-    
+    //Metodo para cargar la puntuacion almacenada en el fichero
     public void cargar(File fichero){
         try{
             Scanner reader = new Scanner(fichero);
@@ -271,14 +303,25 @@ public class Ventana extends javax.swing.JFrame {
         if(evt.getKeyCode() == KeyEvent.VK_SPACE){
             miAeronave.yVelocidad+=9;
         }
+        //Disparar
+        if(evt.getKeyCode() == KeyEvent.VK_M){
+            laser = new Disparo(miAeronave, ANCHOPANTALLA);
+            if(bala == false){
+            gatillo = true;
+            }
+            
+        }
+        
     }//GEN-LAST:event_formKeyPressed
-
+    
+    //Reiniciar juego
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         jDialog1.setVisible(false);
        
         distancia=distancia-distancia*2;
         miAeronave.x=50 ;
         miAeronave.y= ALTOPANTALLA/2-30;
+        laser.disparo.setFrame(ANCHOPANTALLA+2, laser.disparo.getY(),laser.disparo.getWidth(), laser.disparo.getHeight());
         creaColumnas();
         creaEnemigos();
       

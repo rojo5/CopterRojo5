@@ -17,10 +17,13 @@ import javax.swing.ImageIcon;
  * @author rojo5
  */
 public class Enemigo {
+    
+    //Declaracion de variables
     int alturaEnemigo=60;
     int anchoEnemigo =60;
     private int anchoPantalla;
     int posicionY =100;
+    int posicionX;
     Image texturaTie;
     Rectangle2D cazaTie;
     
@@ -30,12 +33,14 @@ public class Enemigo {
         cargaTextura();
     }
     
+    //Metodo encargado de pintar al enemigo
     private void posicionInicial(int ancho){
+        posicionX = ancho;
        Random aleatroio = new Random();
         int desplazamiento = aleatroio.nextInt(150)+100;
-        int desplazamiento2 = aleatroio.nextInt(750)+450;
         
-        cazaTie = new Rectangle2D.Double(ancho, desplazamiento, anchoEnemigo, alturaEnemigo);
+        
+        cazaTie = new Rectangle2D.Double(posicionX, desplazamiento, anchoEnemigo, alturaEnemigo);
     }
     
     private void cargaTextura(){
@@ -51,7 +56,7 @@ public class Enemigo {
         
 //        g2.drawImage(img, xform, obs)
             g2.drawImage(texturaTie, (int)cazaTie.getX(), (int)cazaTie.getY(), null);
-        g2.draw(cazaTie);
+//        g2.draw(cazaTie);
 //        g2.fill(cazaTie);
     }
     

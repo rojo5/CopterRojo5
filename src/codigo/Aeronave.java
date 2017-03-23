@@ -32,6 +32,7 @@ public class Aeronave  extends Rectangle2D.Double{
                 .getImage().getScaledInstance(60, 65, Image.SCALE_DEFAULT))).getImage();
     }
     
+    //Se encarga de dibujar a la nave
     public void vuela(Graphics2D g2){
         AffineTransform trans = new AffineTransform();
          trans.translate(x, y);  //mueve la imagen a la posición en que tiene que ser dibujada
@@ -49,9 +50,9 @@ public class Aeronave  extends Rectangle2D.Double{
             yVelocidad = -1;
         }
     }
-    
+    //Calcula si la nave se sale de los rectangulos
     public boolean chequeaColision(Pasillo p){
-           //Calcula si la nave se sale de los rectangulos
+           
 
             
             Area  areaNave = new Area(this);
@@ -74,7 +75,7 @@ public class Aeronave  extends Rectangle2D.Double{
             return (this.intersects(p.techo) || this.intersects(p.suelo) || colision || colision2);
         
     }
-    
+    //Comprueba si se ha chocado con el enemigo
     public boolean  chequeaEnemigo(Enemigo e){
         Area  areaNave = new Area(this);
         Area  areaEnemigo = new Area(e.cazaTie);
@@ -87,4 +88,6 @@ public class Aeronave  extends Rectangle2D.Double{
             }
         return this.intersects(e.cazaTie) || colision;
     }
+    
+    
 }
