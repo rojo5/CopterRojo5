@@ -32,12 +32,15 @@ public class Ventana extends javax.swing.JFrame {
     static int ANCHOPANTALLA = 811;
     static int ALTOPANTALLA= 420;
     static int ANCHOCOLUMNA= 30;
+    static int SEPARACIONENEMIGO = 1500 ;
     long principio;
     long acaba;
     int distancia;
     int distanciaMax;
     Image fondo;
     Aeronave miAeronave = new Aeronave(60, 60, Color.red);
+    
+    Enemigo arrayEnemigo[]= new Enemigo[3];
     //Pasillo miPasillo = new Pasillo(25, ANCHOPANTALLA, 500);
     Pasillo  arrayPasillo[]= new Pasillo[29];   //Pongo 33 para probar que se mueven
     
@@ -62,6 +65,13 @@ public class Ventana extends javax.swing.JFrame {
         cargar(new File("Puntuacion.txt"));
         jDialog1.setSize(812, 420);
         temporizador.start();
+        creaEnemigos();
+    }
+    
+    private void creaEnemigos(){
+        for(int u=0;u < arrayEnemigo.length;u++){
+            arrayEnemigo[u] = new Enemigo(ANCHOPANTALLA+ u*SEPARACIONENEMIGO, ANCHOPANTALLA);
+        }
     }
     
     //Creo este metodo para crear un array del objeto pasillo  añadir todos los parametros
@@ -101,8 +111,12 @@ public class Ventana extends javax.swing.JFrame {
         bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA); 
         //FONDO
         bufferGraphics.drawImage(fondo, 0,0, null);
-         
-
+         if(distancia >25){
+              for (Enemigo arrayEnemigo1 : arrayEnemigo) {
+                    arrayEnemigo1.mueve(bufferGraphics);   
+              }
+         }
+        
         //Pinto las columnas( clase Pasillo)
         for (Pasillo arrayPasillo1 : arrayPasillo) {
             arrayPasillo1.pintaColumna(bufferGraphics);        
@@ -121,7 +135,15 @@ public class Ventana extends javax.swing.JFrame {
         lienzoGraphics.drawImage(buffer, 0,0, null);
         
         for (Pasillo arrayPasillo1 : arrayPasillo) {
-            if (miAeronave.chequeaColision(arrayPasillo1) == true) {
+            if (miAeronave.chequeaColision(arrayPasillo1 ) == true) {
+                guardar();
+                temporizador.stop();
+                jDialog1.setVisible(true);
+            }
+        }  
+        
+        for (Enemigo arrayEnemigo1 : arrayEnemigo) {
+            if (miAeronave.chequeaEnemigo(arrayEnemigo1 ) == true) {
                 guardar();
                 temporizador.stop();
                 jDialog1.setVisible(true);
@@ -258,6 +280,7 @@ public class Ventana extends javax.swing.JFrame {
         miAeronave.x=50 ;
         miAeronave.y= ALTOPANTALLA/2-30;
         creaColumnas();
+        creaEnemigos();
       
             temporizador.restart();
         

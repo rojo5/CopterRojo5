@@ -74,4 +74,17 @@ public class Aeronave  extends Rectangle2D.Double{
             return (this.intersects(p.techo) || this.intersects(p.suelo) || colision || colision2);
         
     }
+    
+    public boolean  chequeaEnemigo(Enemigo e){
+        Area  areaNave = new Area(this);
+        Area  areaEnemigo = new Area(e.cazaTie);
+        boolean colision = true;
+        
+        areaNave.intersect(areaEnemigo);
+            
+            if(areaNave.isEmpty()){
+                colision=false;
+            }
+        return this.intersects(e.cazaTie) || colision;
+    }
 }

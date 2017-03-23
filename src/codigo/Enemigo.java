@@ -7,8 +7,10 @@ package codigo;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -17,28 +19,49 @@ import java.util.Random;
 public class Enemigo {
     int alturaEnemigo=60;
     int anchoEnemigo =60;
-    int posicionY;
+    private int anchoPantalla;
+    int posicionY =100;
+    Image texturaTie;
     Rectangle2D cazaTie;
     
     public Enemigo (int ancho,int _anchoPantalla){
-        
+        posicionInicial(ancho);
+        anchoPantalla=_anchoPantalla;
+        cargaTextura();
     }
     
     private void posicionInicial(int ancho){
-        posicionY= (int) (Math.random()*60);
+       Random aleatroio = new Random();
+        int desplazamiento = aleatroio.nextInt(150)+100;
+        int desplazamiento2 = aleatroio.nextInt(750)+450;
         
-        cazaTie = new Rectangle2D.Double(ancho,200+ posicionY, anchoEnemigo, alturaEnemigo);
+        cazaTie = new Rectangle2D.Double(ancho, desplazamiento, anchoEnemigo, alturaEnemigo);
     }
     
     private void cargaTextura(){
-        
+        texturaTie = (new ImageIcon(new ImageIcon(
+                getClass().getResource("/imagenes/TIE_Fighter.png"))
+                .getImage().getScaledInstance(60, 60, Image.SCALE_DEFAULT)))
+                .getImage();
     }
     
-//    public boolean mueve(Graphics2D g2){
-//        g2.setColor(Color.red);
-//        
-////        g2.drawImage(img, xform, obs)
-//        
+    public void mueve(Graphics2D g2){
+        animacionEnemigo();
+        g2.setColor(Color.red);
+        
+//        g2.drawImage(img, xform, obs)
+            g2.drawImage(texturaTie, (int)cazaTie.getX(), (int)cazaTie.getY(), null);
+        g2.draw(cazaTie);
 //        g2.fill(cazaTie);
-//    }
+    }
+    
+    private void animacionEnemigo(){
+        if(cazaTie.getX()+ anchoEnemigo < 0){
+            
+            posicionInicial(anchoPantalla);
+        }
+        else{
+            cazaTie.setFrame(cazaTie.getX()-2, cazaTie.getY(),cazaTie.getWidth(), cazaTie.getHeight());
+        }
+    }
 }
