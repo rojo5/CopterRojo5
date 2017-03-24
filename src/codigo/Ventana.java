@@ -14,9 +14,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -63,10 +66,11 @@ public class Ventana extends javax.swing.JFrame {
     public Ventana() {
         initComponents();
         inicializaBuffers();
+        jDialog2.setSize(824,411);
+        jDialog2.setVisible(true);
         creaColumnas();
         cargar(new File("Puntuacion.txt"));
-        jDialog1.setSize(812, 420);
-        temporizador.start();
+        jDialog1.setSize(812, 420);        
         creaEnemigos();
     }
     
@@ -75,6 +79,9 @@ public class Ventana extends javax.swing.JFrame {
         for(int u=0;u < arrayEnemigo.length;u++){
             arrayEnemigo[u] = new Enemigo(ANCHOPANTALLA+ u*SEPARACIONENEMIGO, ANCHOPANTALLA);
         }
+        
+         
+        
     }
     
     //Creo este metodo para crear un array del objeto pasillo  añadir todos los parametros
@@ -110,6 +117,7 @@ public class Ventana extends javax.swing.JFrame {
     //Aqui se pintan en el buffer el los objetos
     private void bucleDelJuego(){
        
+        
         bufferGraphics.setColor(Color.BLACK);
         bufferGraphics.fillRect(0, 0, ANCHOPANTALLA, ALTOPANTALLA); 
         //FONDO
@@ -178,6 +186,12 @@ public class Ventana extends javax.swing.JFrame {
                 //Saca de la pantalla al caza y el disparo
                 arrayEnemigo1.cazaTie.setFrame(0- arrayEnemigo1.cazaTie.getWidth(), arrayEnemigo1.cazaTie.getY(),arrayEnemigo1.cazaTie.getWidth(), arrayEnemigo1.cazaTie.getHeight());
                 laser.disparo.setFrame(ANCHOPANTALLA+2, laser.disparo.getY(),laser.disparo.getWidth(), laser.disparo.getHeight());
+                try {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream( getClass().getResource("/sonidos/Explosion.wav") ));
+            clip.loop(0);
+        } catch (Exception e) {      
+        }
             }
         }  
         }
@@ -229,6 +243,8 @@ public class Ventana extends javax.swing.JFrame {
         jDialog1 = new javax.swing.JDialog();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jDialog2 = new javax.swing.JDialog();
+        jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
 
         jTextField1.setFont(new java.awt.Font("Comic Sans MS", 0, 36)); // NOI18N
@@ -264,6 +280,30 @@ public class Ventana extends javax.swing.JFrame {
                 .addGap(74, 74, 74)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(62, Short.MAX_VALUE))
+        );
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/aurebesh.png"))); // NOI18N
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButton2MousePressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jDialog2Layout = new javax.swing.GroupLayout(jDialog2.getContentPane());
+        jDialog2.getContentPane().setLayout(jDialog2Layout);
+        jDialog2Layout.setHorizontalGroup(
+            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog2Layout.createSequentialGroup()
+                .addGap(230, 230, 230)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(251, Short.MAX_VALUE))
+        );
+        jDialog2Layout.setVerticalGroup(
+            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog2Layout.createSequentialGroup()
+                .addGap(121, 121, 121)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(135, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -309,6 +349,12 @@ public class Ventana extends javax.swing.JFrame {
             if(bala == false){
             gatillo = true;
             }
+            try {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream( getClass().getResource("/sonidos/laserSound.wav") ));
+            clip.loop(0);
+        } catch (Exception e) {      
+        }
             
         }
         
@@ -330,6 +376,11 @@ public class Ventana extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jButton2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MousePressed
+        temporizador.start();
+        jDialog2.setVisible(false);
+    }//GEN-LAST:event_jButton2MousePressed
 
     /**
      * @param args the command line arguments
@@ -368,7 +419,9 @@ public class Ventana extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JDialog jDialog1;
+    private javax.swing.JDialog jDialog2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables

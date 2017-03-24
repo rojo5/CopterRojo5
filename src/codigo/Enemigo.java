@@ -66,7 +66,7 @@ public class Enemigo {
             posicionInicial(anchoPantalla);
         }
         else{
-            cazaTie.setFrame(cazaTie.getX()-2, cazaTie.getY(),cazaTie.getWidth(), cazaTie.getHeight());
+            cazaTie.setFrame(cazaTie.getX()-3, cazaTie.getY(),cazaTie.getWidth(), cazaTie.getHeight());
         }
     }
 }
